@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   # Check there is no syntax errors in the project
   php-linter:
-    name: PHP Syntax check 8.1 => 8.4
+    name: PHP Syntax check 8.1 => 8.3
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,12 +52,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        presta-versions: ['8.0', 'latest']
+        presta-version: [ '8.0', 'nightly', '9.0.x' ]
+        php-version: [ '8.1' ]
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php-version }})
 
       - name: Checkout
         uses: actions/checkout@v3.1.0
@@ -79,5 +80,5 @@ jobs:
       - run: composer install
 
       # Docker images prestashop/prestashop may be used, even if the shop remains uninstalled
-      - name: Execute PHPStan on PrestaShop (Tag ${{ matrix.presta-versions }})
-        run: ./tests/phpstan.sh ${{ matrix.presta-versions }}
+      - name: Execute PHPStan on PrestaShop (Tag ${{ matrix.presta-version }}-${{ matrix.php-version }}))
+        run: ./tests/phpstan.sh ${{ matrix.presta-version }} ${{ matrix.php-version }}
