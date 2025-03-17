@@ -411,7 +411,7 @@ class Ps_EmailAlerts extends Module
         $carrier = new Carrier((int) $order->id_carrier);
         $message = $this->getAllMessages($order->id);
 
-        if (!$message || empty($message)) {
+        if (empty($message)) {
             $message = $this->trans('No message', [], 'Modules.Emailalerts.Admin');
         }
 
@@ -951,7 +951,7 @@ class Ps_EmailAlerts extends Module
             '{delivery_postal_code}' => $delivery->postcode,
             '{delivery_country}' => $delivery->country,
             '{delivery_state}' => isset($delivery_state->name) ? $delivery_state->name : '',
-            '{delivery_phone}' => isset($delivery->phone) ? $delivery->phone : $delivery->phone_mobile,
+            '{delivery_phone}' => !empty($delivery->phone) ? $delivery->phone : $delivery->phone_mobile,
             '{delivery_other}' => $delivery->other,
             '{invoice_company}' => $invoice->company,
             '{invoice_firstname}' => $invoice->firstname,
@@ -962,7 +962,7 @@ class Ps_EmailAlerts extends Module
             '{invoice_postal_code}' => $invoice->postcode,
             '{invoice_country}' => $invoice->country,
             '{invoice_state}' => isset($invoice_state->name) ? $invoice_state->name : '',
-            '{invoice_phone}' => isset($invoice->phone) ? $invoice->phone : $invoice->phone_mobile,
+            '{invoice_phone}' => !empty($invoice->phone) ? $invoice->phone : $invoice->phone_mobile,
             '{invoice_other}' => $invoice->other,
             '{order_name}' => $order->reference,
             '{shop_name}' => $configuration['PS_SHOP_NAME'],
